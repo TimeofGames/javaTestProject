@@ -1,5 +1,6 @@
 package com.example.football.core.player;
 
+import com.example.football.core.player.role.Role;
 import com.example.football.core.team.Team;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -19,7 +20,7 @@ public class Player {
             strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
                     @org.hibernate.annotations.Parameter(name = "sequence_name", value = "fc_player_id_seq"),
-                    @org.hibernate.annotations.Parameter(name= "INCREMENT", value = "1"),
+                    @org.hibernate.annotations.Parameter(name = "INCREMENT", value = "1"),
                     @org.hibernate.annotations.Parameter(name = "MINVALUE", value = "1"),
                     @org.hibernate.annotations.Parameter(name = "MAXVALUE", value = "2147483647"),
                     @org.hibernate.annotations.Parameter(name = "CACHE", value = "1")
@@ -44,12 +45,16 @@ public class Player {
     private int age;
 
     @NotEmpty
+    @ManyToOne()
+    @JoinTable(name = "fc_player_role")
+    private Role role;
+
+    @NotEmpty
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(name = "fc_player_team",
-            joinColumns = { @JoinColumn(name = "id_player") },
-            inverseJoinColumns = { @JoinColumn(name = "id_team") })
+            joinColumns = {@JoinColumn(name = "id_player")},
+            inverseJoinColumns = {@JoinColumn(name = "id_team")})
     private Set<Team> teams = new HashSet<>();
-
 
     public long getId() {
         return id;
@@ -105,5 +110,13 @@ public class Player {
 
     public void setTeams(Set<Team> teams) {
         this.teams = teams;
+    }
+
+    public String getRole() {
+        return role.getRole();
+    }
+
+    public void setRole(String role) {
+        this.role.setRole(role);
     }
 }
