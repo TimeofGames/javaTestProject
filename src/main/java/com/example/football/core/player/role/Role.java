@@ -21,7 +21,7 @@ public class Role {
             }
     )
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fc_player_role_id_seq")
-    private long id;
+    private int id;
 
     @Column(name = "role")
     private String role;
@@ -30,7 +30,7 @@ public class Role {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -45,8 +45,10 @@ public class Player {
     private int age;
 
     @NotEmpty
-    @ManyToOne()
-    @JoinTable(name = "fc_player_role")
+    @ManyToOne
+    @JoinTable(name = "fc_player_role",
+            joinColumns = {@JoinColumn(name = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role")})
     private Role role;
 
     @NotEmpty
