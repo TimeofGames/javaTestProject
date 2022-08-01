@@ -19,6 +19,8 @@ public class PlayerView {
 
     private int age;
 
+    private String role;
+
     private Set<TeamView> teams = new HashSet<>();
 
 
@@ -76,5 +78,13 @@ public class PlayerView {
 
     public void setTeams(Set<TeamView> teams) {
         this.teams = teams;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

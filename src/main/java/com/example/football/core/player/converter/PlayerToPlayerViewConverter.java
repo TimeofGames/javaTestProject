@@ -30,6 +30,7 @@ public class PlayerToPlayerViewConverter implements Converter<Player, PlayerView
         view.setAge(player.getAge());
         view.setHeight(player.getHeight());
         view.setWeight(player.getWeight());
+        view.setRole(player.getRole());
         Set<TeamView> views = new HashSet<>();
         Set<Team> teams= player.getTeams();
         teams.forEach(team -> {
