@@ -46,9 +46,7 @@ public class Player {
 
     @NotEmpty
     @ManyToOne
-    @JoinTable(name = "fc_player_role",
-            joinColumns = {@JoinColumn(name = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "role")})
+    @JoinColumn(name = "role_id")
     private Role role;
 
     @NotEmpty

@@ -26,7 +26,7 @@ public class Role {
     @Column(name = "role")
     private String role;
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
