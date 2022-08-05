@@ -4,7 +4,7 @@ import com.example.football.base.BaseRequest;
 import com.example.football.core.player.converter.PlayerToPlayerViewConverter;
 import com.example.football.core.player.web.PlayerView;
 import com.example.football.core.player.web.PlayerBaseReq;
-import com.example.football.core.role.RoleRepo;
+import com.example.football.core.role.RoleService;
 import com.example.football.core.team.Team;
 import com.example.football.core.team.TeamRepo;
 import com.example.football.error.EntityNotFoundException;
@@ -29,18 +29,18 @@ public class PlayerService {
     private final PlayerToPlayerViewConverter playerToPlayerViewConverter;
     private final TeamRepo teamRepo;
 
-    private final RoleRepo roleRepo;
+    private final RoleService roleService;
     private final MessageUtil messageUtil;
 
     public PlayerService(PlayerRepo playerRepo,
                          PlayerToPlayerViewConverter playerToPlayerViewConverter,
                          TeamRepo teamRepo,
-                         RoleRepo roleRepo,
+                         RoleService roleService,
                          MessageUtil messageUtil) {
         this.playerRepo = playerRepo;
         this.playerToPlayerViewConverter = playerToPlayerViewConverter;
         this.teamRepo = teamRepo;
-        this.roleRepo = roleRepo;
+        this.roleService = roleService;
         this.messageUtil = messageUtil;
     }
 
@@ -79,7 +79,6 @@ public class PlayerService {
             throw new EntityNotFoundException(messageUtil.getMessage("player.NotFound", id));
         }
     }
-
     @Transactional
     public PlayerView update(Player player, PlayerBaseReq req) {
         Player newPlayer = this.prepare(player,req);
@@ -93,7 +92,7 @@ public class PlayerService {
         player.setWeight(playerBaseReq.getWeight());
         player.setHeight(playerBaseReq.getHeight());
         player.setAge(playerBaseReq.getAge());
-        player.setRole(roleRepo.findById(playerBaseReq.getRole()).orElseThrow(() -> new EntityNotFoundException(messageUtil.getMessage("role.NotFound", playerBaseReq.getRole()))));
+        player.setRole(roleService.getRoleById( playerBaseReq.getRole()));
         List<Team> teamList = teamRepo.findAllById(playerBaseReq.getTeams()
                 .stream()
                 .map(BaseRequest.Id::getId)
