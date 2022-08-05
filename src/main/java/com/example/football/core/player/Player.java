@@ -1,6 +1,6 @@
 package com.example.football.core.player;
 
-import com.example.football.core.player.role.Role;
+import com.example.football.core.role.Role;
 import com.example.football.core.team.Team;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -116,7 +116,7 @@ public class Player {
         return role.getRole();
     }
 
-    public void setRole(String role) {
-        this.role.setRole(role);
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

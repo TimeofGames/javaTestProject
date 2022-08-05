@@ -20,6 +20,8 @@ public class PlayerBaseReq extends BaseRequest {
 
     private int age;
 
+    private int role;
+
     @NotEmpty
     private List<@Valid Id> teams;
 
@@ -70,5 +72,13 @@ public class PlayerBaseReq extends BaseRequest {
 
     public void setTeams(List<Id> teams) {
         this.teams = teams;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
     }
 }
