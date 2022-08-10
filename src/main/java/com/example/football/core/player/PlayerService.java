@@ -79,20 +79,21 @@ public class PlayerService {
             throw new EntityNotFoundException(messageUtil.getMessage("player.NotFound", id));
         }
     }
+
     @Transactional
     public PlayerView update(Player player, PlayerBaseReq req) {
-        Player newPlayer = this.prepare(player,req);
+        Player newPlayer = this.prepare(player, req);
         Player playerSave = playerRepo.save(newPlayer);
         return playerToPlayerViewConverter.convert(playerSave);
     }
 
-    public Player prepare(Player player, PlayerBaseReq playerBaseReq){
+    private Player prepare(Player player, PlayerBaseReq playerBaseReq) {
         player.setName(playerBaseReq.getName());
         player.setSurname(playerBaseReq.getSurname());
         player.setWeight(playerBaseReq.getWeight());
         player.setHeight(playerBaseReq.getHeight());
         player.setAge(playerBaseReq.getAge());
-        player.setRole(roleService.getRoleById( playerBaseReq.getRole()));
+        player.setRole(roleService.getRoleById(playerBaseReq.getRole()));
         List<Team> teamList = teamRepo.findAllById(playerBaseReq.getTeams()
                 .stream()
                 .map(BaseRequest.Id::getId)

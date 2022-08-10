@@ -92,4 +92,8 @@ public class TournamentService {
         tournament.setTeams(teams);
         return tournament;
     }
+
+    public List<Tournament> findAllById(List<Long> ids) {
+        return tournamentRepo.findAllById(ids);
+    }
 }

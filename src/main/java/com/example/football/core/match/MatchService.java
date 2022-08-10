@@ -1,13 +1,12 @@
 package com.example.football.core.match;
 
 import com.example.football.core.match.converter.MatchToMatchViewConverter;
-import com.example.football.core.match.web.MatchView;
 import com.example.football.core.match.web.MatchBaseReq;
 import com.example.football.core.match.web.MatchLastReq;
+import com.example.football.core.match.web.MatchView;
 import com.example.football.core.stadium.Stadium;
 import com.example.football.core.stadium.StadiumService;
 import com.example.football.core.team.TeamRepo;
-import com.example.football.core.tournament.Tournament;
 import com.example.football.core.tournament.TournamentRepo;
 import com.example.football.error.AccreditationException;
 import com.example.football.error.EntityNotFoundException;
@@ -74,7 +73,8 @@ public class MatchService {
 
     public MatchView create(MatchBaseReq req) {
         Match match = new Match();
-        this.prepare(match,req);
+        checkAccreditation(match, req);
+        this.prepare(match, req);
         Match matchSave = matchRepo.save(match);
         return matchToMatchViewConverter.convert(matchSave);
     }
@@ -87,8 +87,10 @@ public class MatchService {
         }
     }
 
-    public MatchView update(Match match, MatchBaseReq req){
-        Match newMatch = this.prepare(match,req);
+    public MatchView update(Match match, MatchBaseReq req) {
+        checkAccreditation(match, req);
+
+        Match newMatch = this.prepare(match, req);
         Match matchSave = matchRepo.save(newMatch);
         return matchToMatchViewConverter.convert(matchSave);
     }
@@ -100,13 +102,15 @@ public class MatchService {
         match.setTournament(tournamentRepo.getOne(req.getTournamentId()));
         match.setOwner(teamRepo.getOne(req.getTeamOwnerId()));
         match.setGuest(teamRepo.getOne(req.getTeamGuestId()));
-        if (checkAccreditation(req.getStadium_id(),match.getTournament())){match.setStadium_id(req.getStadium_id());}
-        else {throw new AccreditationException(messageUtil.getMessage("accreditation.Wrong"));}
+        match.setStadium_id(req.getStadium_id());
         return match;
     }
 
-    private boolean checkAccreditation(long id, Tournament tournament){
-        Stadium stadium = stadiumService.getStadiumByIdOrThrow(id);
-        return stadium.getAccreditationList().contains(tournament);
+    private void checkAccreditation(Match match, MatchBaseReq req) {
+        Stadium stadium = stadiumService.getStadiumByIdOrThrow(req.getStadium_id());
+
+        if (!stadium.getAccreditationList().contains(match.getTournament())) {
+            throw new AccreditationException(messageUtil.getMessage("accreditation.Wrong"));
+        }
     }
 }

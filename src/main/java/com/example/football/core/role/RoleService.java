@@ -26,17 +26,20 @@ public class RoleService {
         this.roleToRoleViewConverter = roleToRoleViewConverter;
     }
 
-    public Role getRoleById(int id){
-        return roleRepo.findById(id).orElseThrow(()-> new EntityNotFoundException(messageUtil.getMessage("role.NotFound", id)));
+    public Role getRoleById(int id) {
+        return roleRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(messageUtil.getMessage("role.NotFound", id)));
     }
 
-    public RoleView getRole(int id){
+    public RoleView getRole(int id) {
         return roleToRoleViewConverter.convert(getRoleById(id));
     }
 
-    public Page<RoleView> getAllRoles(Pageable pageable){
+    public Page<RoleView> getAllRoles(Pageable pageable) {
         Page<Role> roles = roleRepo.findAll(pageable);
-        List<RoleView> roleViews  = roles.stream().map(roleToRoleViewConverter::convert).collect(Collectors.toList());
-        return new PageImpl<>(roleViews,pageable, roles.getTotalElements());
+        List<RoleView> roleViews = roles.stream()
+                .map(roleToRoleViewConverter::convert)
+                .collect(Collectors.toList());
+        return new PageImpl<>(roleViews, pageable, roles.getTotalElements());
     }
 }
