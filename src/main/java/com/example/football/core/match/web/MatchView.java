@@ -24,6 +24,8 @@ public class MatchView {
 
     private TournamentView tournament;
 
+    private long stadium_id;
+
 
     public long getId() {
         return id;
@@ -79,5 +81,13 @@ public class MatchView {
 
     public void setTournament(TournamentView tournament) {
         this.tournament = tournament;
+    }
+
+    public long getStadium_id() {
+        return stadium_id;
+    }
+
+    public void setStadium_id(long stadium_id) {
+        this.stadium_id = stadium_id;
     }
 }

@@ -25,6 +25,9 @@ public class MatchBaseReq extends BaseRequest {
     @NotNull
     private Long tournamentId;
 
+    @NotNull
+    private long stadium_id;
+
 
     public Long getTeamOwnerId() {
         return teamOwnerId;
@@ -72,5 +75,13 @@ public class MatchBaseReq extends BaseRequest {
 
     public void setTournamentId(Long tournamentId) {
         this.tournamentId = tournamentId;
+    }
+
+    public long getStadium_id() {
+        return stadium_id;
+    }
+
+    public void setStadium_id(long stadium_id) {
+        this.stadium_id = stadium_id;
     }
 }

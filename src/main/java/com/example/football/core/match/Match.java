@@ -48,6 +48,9 @@ public class Match {
     @JoinColumn(name = "id_tournament")
     private Tournament tournament;
 
+    @Column(name = "stadium_id")
+    private long stadium_id;
+
     public long getId(){return id;}
 
     public void setId(Long id){this.id = id;}
@@ -75,4 +78,12 @@ public class Match {
     public Tournament getTournament(){return tournament;}
 
     public void setTournament(Tournament tournament){this.tournament = tournament;}
+
+    public long getStadium_id() {
+        return stadium_id;
+    }
+
+    public void setStadium_id(long stadium_id) {
+        this.stadium_id = stadium_id;
+    }
 }

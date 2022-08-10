@@ -4,8 +4,12 @@ import com.example.football.core.match.converter.MatchToMatchViewConverter;
 import com.example.football.core.match.web.MatchView;
 import com.example.football.core.match.web.MatchBaseReq;
 import com.example.football.core.match.web.MatchLastReq;
+import com.example.football.core.stadium.Stadium;
+import com.example.football.core.stadium.StadiumService;
 import com.example.football.core.team.TeamRepo;
+import com.example.football.core.tournament.Tournament;
 import com.example.football.core.tournament.TournamentRepo;
+import com.example.football.error.AccreditationException;
 import com.example.football.error.EntityNotFoundException;
 import com.example.football.util.MessageUtil;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -26,16 +30,19 @@ public class MatchService {
     private final TournamentRepo tournamentRepo;
     private final MessageUtil messageUtil;
 
+    private final StadiumService stadiumService;
+
     public MatchService(MatchRepo matchRepo,
                         MatchToMatchViewConverter matchToMatchViewConverter,
                         TeamRepo teamRepo,
                         TournamentRepo tournamentRepo,
-                        MessageUtil messageUtil) {
+                        MessageUtil messageUtil, StadiumService stadiumService) {
         this.matchRepo = matchRepo;
         this.matchToMatchViewConverter = matchToMatchViewConverter;
         this.teamRepo = teamRepo;
         this.tournamentRepo = tournamentRepo;
         this.messageUtil = messageUtil;
+        this.stadiumService = stadiumService;
     }
 
     public List<MatchView> findLastMatch(MatchLastReq req) {
@@ -93,6 +100,13 @@ public class MatchService {
         match.setTournament(tournamentRepo.getOne(req.getTournamentId()));
         match.setOwner(teamRepo.getOne(req.getTeamOwnerId()));
         match.setGuest(teamRepo.getOne(req.getTeamGuestId()));
+        if (checkAccreditation(req.getStadium_id(),match.getTournament())){match.setStadium_id(req.getStadium_id());}
+        else {throw new AccreditationException(messageUtil.getMessage("accreditation.Wrong"));}
         return match;
+    }
+
+    private boolean checkAccreditation(long id, Tournament tournament){
+        Stadium stadium = stadiumService.getStadiumByIdOrThrow(id);
+        return stadium.getAccreditationList().contains(tournament);
     }
 }

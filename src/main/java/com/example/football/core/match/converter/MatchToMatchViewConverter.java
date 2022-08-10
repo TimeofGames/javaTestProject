@@ -35,6 +35,7 @@ public class MatchToMatchViewConverter implements Converter<Match, MatchView> {
         view.setTeamOwner(teamToTeamViewConverter.convert(owner));
         Tournament tournament = match.getTournament();
         view.setTournament(tournamentToTournamentViewConverter.convert(tournament));
+        view.setStadium_id(match.getStadium_id());
         return view;
     }
 }
