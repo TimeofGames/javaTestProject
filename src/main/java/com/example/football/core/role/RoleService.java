@@ -1,7 +1,5 @@
 package com.example.football.core.role;
 
-import com.example.football.core.player.Player;
-import com.example.football.core.player.web.PlayerView;
 import com.example.football.core.role.converter.RoleToRoleViewConverter;
 import com.example.football.core.role.web.RoleView;
 import com.example.football.error.EntityNotFoundException;
@@ -11,7 +9,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
